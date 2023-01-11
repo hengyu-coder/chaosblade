@@ -45,32 +45,32 @@ BUILD_ARM_IMAGE_PATH=build/image/blade_arm
 BUILD_TARGET_CACHE=$(BUILD_TARGET)/cache
 
 # chaosblade-exec-os
-BLADE_EXEC_OS_PROJECT=https://github.com/chaosblade-io/chaosblade-exec-os.git
-BLADE_EXEC_OS_BRANCH=master
+BLADE_EXEC_OS_PROJECT=https://github.com/hengyu-coder/chaosblade-exec-os.git
+BLADE_EXEC_OS_BRANCH=yh-master
 
 # chaosblade-exec-middleware
-BLADE_EXEC_MIDDLEWARE_PROJECT=https://github.com/chaosblade-io/chaosblade-exec-middleware.git
-BLADE_EXEC_MIDDLEWARE_BRANCH=main
+BLADE_EXEC_MIDDLEWARE_PROJECT=https://github.com/hengyu-coder/chaosblade-exec-middleware.git
+BLADE_EXEC_MIDDLEWARE_BRANCH=yh-main
 
 # chaosblade-exec-cloud
-BLADE_EXEC_CLOUD_PROJECT=https://github.com/chaosblade-io/chaosblade-exec-cloud.git
-BLADE_EXEC_CLOUD_BRANCH=main
+BLADE_EXEC_CLOUD_PROJECT=https://github.com/hengyu-coder/chaosblade-exec-cloud.git
+BLADE_EXEC_CLOUD_BRANCH=yh-main
 
 # chaosblade-exec-cri
-BLADE_EXEC_CRI_PROJECT=https://github.com/chaosblade-io/chaosblade-exec-cri.git
-BLADE_EXEC_CRI_BRANCH=main
+BLADE_EXEC_CRI_PROJECT=https://github.com/hengyu-coder/chaosblade-exec-cri.git
+BLADE_EXEC_CRI_BRANCH=yh-main
 
 # chaosblade-exec-kubernetes
-BLADE_OPERATOR_PROJECT=https://github.com/chaosblade-io/chaosblade-operator.git
-BLADE_OPERATOR_BRANCH=master
+BLADE_OPERATOR_PROJECT=https://github.com/hengyu-coder/chaosblade-operator.git
+BLADE_OPERATOR_BRANCH=yh-master
 
 # chaosblade-exec-jvm
-BLADE_EXEC_JVM_PROJECT=https://github.com/chaosblade-io/chaosblade-exec-jvm.git
-BLADE_EXEC_JVM_BRANCH=master
+BLADE_EXEC_JVM_PROJECT=https://github.com/hengyu-coder/chaosblade-exec-jvm.git
+BLADE_EXEC_JVM_BRANCH=yh-master
 
 # chaosblade-exec-cplus
-BLADE_EXEC_CPLUS_PROJECT=https://github.com/chaosblade-io/chaosblade-exec-cplus.git
-BLADE_EXEC_CPLUS_BRANCH=master
+BLADE_EXEC_CPLUS_PROJECT=https://github.com/hengyu-coder/chaosblade-exec-cplus.git
+BLADE_EXEC_CPLUS_BRANCH=yh-master
 
 # cri yaml
 CRI_YAML_FILE_NAME=chaosblade-cri-spec-$(BLADE_VERSION).yaml
@@ -89,11 +89,11 @@ help:
 	@echo ''
 	@echo 'You can compile each project of ChaosBlade on Mac or Linux platform,'
 	@echo 'You can use docker to compile cross-platform,compile the package running on Linux platform.'
-	@echo 'For details refer to https://github.com/chaosblade-io/chaosblade/wiki/ChaosBlade-Projects-Compilation'
+	@echo 'For details refer to https://github.com/hengyu-coder/chaosblade/wiki/ChaosBlade-Projects-Compilation'
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>...\033[0m\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  \033[36m%-20s\033[0m  %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 ##@ Build
-build: pre_build cli nsexec os cloud middleware cri cplus java kubernetes package check_yaml  ## Build all scenarios
+build: pre_build cli  os cloud middleware cri cplus java kubernetes package check_yaml  ## Build all scenarios
 #build: pre_build cli nsexec os cloud middleware cri cplus java kubernetes upx package check_yaml  ## Build all scenarios
 
 # for example: make build_with cli
@@ -220,7 +220,7 @@ build_image: ## Build chaosblade-tool image
 	tar zxvf $(BUILD_TARGET_PKG_NAME) -C $(BUILD_IMAGE_PATH)
 	docker build -f $(BUILD_IMAGE_PATH)/Dockerfile \
 		--build-arg BLADE_VERSION=$(BLADE_VERSION) \
-		-t chaosbladeio/chaosblade-tool:$(BLADE_VERSION) \
+		-t registry.cn-shanghai.aliyuncs.com/guohz-sit/chaosblade-tool:$(BLADE_VERSION) \
 		$(BUILD_IMAGE_PATH)
 	rm -rf $(BUILD_IMAGE_PATH)/$(BUILD_TARGET_DIR_NAME)
 
@@ -230,7 +230,7 @@ build_image_arm: ## Build chaosblade-tool-arm image
 	tar zxvf $(BUILD_TARGET_PKG_NAME) -C $(BUILD_ARM_IMAGE_PATH)
 	docker build -f $(BUILD_ARM_IMAGE_PATH)/Dockerfile \
 		--build-arg BLADE_VERSION=$(BLADE_VERSION) \
-		-t chaosbladeio/chaosblade-tool-arm64:$(BLADE_VERSION) \
+		-t registry.cn-shanghai.aliyuncs.com/guohz-sit/chaosblade-tool-arm64:$(BLADE_VERSION) \
 		$(BUILD_ARM_IMAGE_PATH)
 	rm -rf $(BUILD_ARM_IMAGE_PATH)/$(BUILD_TARGET_DIR_NAME)
 
@@ -250,7 +250,7 @@ upx: ## Upx compression by docker image
 	docker run --rm \
     		-w $(shell pwd)/$(BUILD_TARGET_PKG_DIR) \
     		-v $(shell pwd)/$(BUILD_TARGET_PKG_DIR):$(shell pwd)/$(BUILD_TARGET_PKG_DIR) \
-     		chaosbladeio/chaosblade-upx:3.96 \
+     		registry.cn-shanghai.aliyuncs.com/guohz-sit/chaosblade-upx:3.96 \
     		--best \
     		blade $(shell pwd)/$(BUILD_TARGET_PKG_DIR)/bin/*
 
@@ -286,7 +286,7 @@ build_linux_arm_with_arg:
 		-w /go/src/github.com/chaosblade-io/chaosblade \
 		-v ~/.m2/repository:/root/.m2/repository \
 		-v $(shell pwd):/go/src/github.com/chaosblade-io/chaosblade \
-		chaosbladeio/chaosblade-build-arm:latest build_with $$ARGS
+		registry.cn-shanghai.aliyuncs.com/guohz-sit/chaosblade-build-arm:latest build_with $$ARGS
 
 # create cache dir
 mkdir_build_target:
