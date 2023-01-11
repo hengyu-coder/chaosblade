@@ -250,7 +250,7 @@ upx: ## Upx compression by docker image
 	docker run --rm \
     		-w $(shell pwd)/$(BUILD_TARGET_PKG_DIR) \
     		-v $(shell pwd)/$(BUILD_TARGET_PKG_DIR):$(shell pwd)/$(BUILD_TARGET_PKG_DIR) \
-     		registry.cn-shanghai.aliyuncs.com/guohz-sit/chaosblade-upx:3.96 \
+     		chaosbladeio/chaosblade-upx:3.96 \
     		--best \
     		blade $(shell pwd)/$(BUILD_TARGET_PKG_DIR)/bin/*
 
